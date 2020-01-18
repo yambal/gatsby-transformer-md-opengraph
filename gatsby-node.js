@@ -38,9 +38,13 @@ exports.onCreateNode = async ({
         mdUrl: found[2],
         description: og.data.ogDescription,
         title: og.data.ogTitle,
-        image: og.data.ogImage.url
+        image: og.data.ogImage
       }) 
     }
+
+    console.group('open-graph')
+    console.info(ogNodes)
+    console.groupEnd()
 
     const addNode = {
       id: createNodeId(`${node} >>> ${found}`),
