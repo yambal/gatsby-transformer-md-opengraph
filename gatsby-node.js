@@ -32,19 +32,25 @@ exports.onCreateNode = async ({
     const frontmatterJsonString = JSON.stringify(node.frontmatter, null, 2)
     const regex1 = /\[([^\]\{\}\n\r\t"]+)\]\(([^)]+)\)/g
     while ((found = regex1.exec(frontmatterJsonString)) !== null) {
-      const og = await getOg(found[2])
-      ogNodes.push({
-        mdTitle: found[1],
-        mdUrl: found[2],
-        description: og.data.ogDescription,
-        title: og.data.ogTitle,
-        image: og.data.ogImage
-      }) 
+      if (found[1] && found[2]) {
+        const og = await getOg(found[2])
+        if (og) {
+          ogNodes.push({
+            mdTitle: found[1],
+            mdUrl: found[2],
+            description: og.data.ogDescription,
+            title: og.data.ogTitle,
+            image: og.data.ogImage
+          })
+        }
+      }
     }
 
-    console.group('open-graph')
-    console.info(ogNodes)
-    console.groupEnd()
+    if (ogNodes) {
+      console.group('open-graph')
+      console.info(ogNodes)
+      console.groupEnd()
+    }
 
     const addNode = {
       id: createNodeId(`${node} >>> ${found}`),
