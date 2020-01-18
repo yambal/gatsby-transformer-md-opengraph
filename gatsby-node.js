@@ -34,9 +34,11 @@ exports.onCreateNode = async ({
     while ((found = regex1.exec(frontmatterJsonString)) !== null) {
       const og = await getOg(found[2])
       ogNodes.push({
-        title: found[1],
-        url: found[2],
-        opengraph: og.data,
+        mdTitle: found[1],
+        mdUrl: found[2],
+        description: og.data.ogDescription,
+        title: og.data.ogTitle,
+        image: og.data.ogImage.url
       }) 
     }
 
@@ -47,9 +49,10 @@ exports.onCreateNode = async ({
       internal: {
         type: `Opengraph`
       },
-      opengraphs: ogNodes
+      og: ogNodes
     }
-    addNode.internal.contentDigest = createContentDigest(addNode);
+    addNode.internal.contentDigest = createContentDigest(addNode)
+    
     createNode(addNode);
     createParentChildLink({
       parent: node,
