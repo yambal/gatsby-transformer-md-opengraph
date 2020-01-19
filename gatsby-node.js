@@ -36,7 +36,7 @@ exports.onCreateNode = async ({
         const og = await getOg(found[2])
         if (og) {
           ogNodes.push({
-            mdTitle: found[1],
+            mdTitle: found[1] || '',
             mdUrl: found[2],
             description: og.data.ogDescription,
             title: og.data.ogTitle,
