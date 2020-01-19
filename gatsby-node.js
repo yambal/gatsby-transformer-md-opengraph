@@ -32,11 +32,11 @@ exports.onCreateNode = async ({
     const frontmatterJsonString = JSON.stringify(node.frontmatter, null, 2)
     const regex1 = /\[([^\]\{\}\n\r\t"]+)\]\(([^)]+)\)/g
     while ((found = regex1.exec(frontmatterJsonString)) !== null) {
-      if (found[1] && found[2]) {
+      if (found && found[1] && found[2]) {
         const og = await getOg(found[2])
-        if (og) {
+        if (found && og) {
           ogNodes.push({
-            mdTitle: found[1] || '',
+            mdTitle: found[1],
             mdUrl: found[2],
             description: og.data.ogDescription,
             title: og.data.ogTitle,
